@@ -47,6 +47,25 @@ namespace todolist
                     Console.WriteLine("Reading file {0}", commandWord[1]);
                     todoList = ReadToDoListFile(commandWord[1]);
                 }
+                else if (commandSplit[0] == "save")
+                {
+                    if (commandSplit.Length == 1)
+                    {
+                        using (StreamWriter writer = new StreamWriter(filePath))
+                        {
+                            for (int i = 0; i < todoList.Count; i++)
+                            {
+                                writer.WriteLine($"{todoList[i].date}#{todoList[i].state}#{todoList[i].title}");
+                            }
+                        }
+                    }
+                    else if (commandSplit.Length == 2)
+                    {
+                        using (StreamWriter sw = File.CreateText(commandSplit[1]))
+                        {
+                            for (int i = 0; i < todoList.Count; i++)
+                            {
+                                sw.WriteLine($"{todoList[i].date}#{todoList[i].status}#{todoList[i].title}");
                 else
                 {
                     Console.WriteLine("Unkwown command: {0}", command);
@@ -68,11 +87,7 @@ namespace todolist
 
                     //Console.WriteLine("{0}", line);
                     string[] lword = sr.ReadLine().Split('#');
-                    //Fas1
-                    //string date = lword[0];
-                    //string state = lword[1];
-                    //string title = lword[2];
-                    //Fas2
+                    
                     Activity A = new Activity(lword[0], lword[1], lword[2]);
                     Console.WriteLine("{0} - {1} - {2}", A.date, A.state, A.title);
                     todoList.Add(A);
